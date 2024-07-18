@@ -1,0 +1,1 @@
+<h1>Hello my is <?= $data["name"]?></h1>

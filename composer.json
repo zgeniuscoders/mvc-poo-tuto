@@ -1,0 +1,16 @@
+{
+    "name": "zgeniuscoders/mvc",
+    "autoload": {
+        "psr-4": {
+            "Zgeniuscoders\\Mvc\\": "src/",
+            "App\\": "app/"
+        }
+    },
+    "authors": [
+        {
+            "name": "zgeniuscoders",
+            "email": "zgeniuscoders@gmail.com"
+        }
+    ],
+    "require": {}
+}
