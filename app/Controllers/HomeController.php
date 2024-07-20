@@ -3,6 +3,7 @@
 
     namespace App\Controllers;
 
+use App\Models\Post;
 use Zgeniuscoders\Mvc\Render\Render;
 
     class HomeController {
@@ -10,8 +11,11 @@ use Zgeniuscoders\Mvc\Render\Render;
 
         public function index(){
             $render = new Render();
+
+            $post  = new Post();
+            
             $render->view("index",[
-                "name" => "zgeniuscoders@"
+                "posts" => $post->all()
             ]);
         }
 
