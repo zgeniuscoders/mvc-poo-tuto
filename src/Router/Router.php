@@ -9,36 +9,36 @@ class Router
 
     private array $routes = [];
 
-    public function get(string $url, array $handler)
+    public function get(string $url, array $handler): self
     {
-        $this->routes[$url] = $handler;
+        $route = new Route($url, $handler);
+        $this->routes["GET"][] = $route;
+
+        return $this;
+    }
+
+    public function post(string $url, array $handler): self
+    {
+        $route = new Route($url, $handler);
+        $this->routes["POST"][] = $route;
+        return $this;
     }
 
 
     public function run(string $url)
     {
-        if (isset($this->routes[$url])) {
-            $classe = $this->routes[$url][0];
-            $method = $this->routes[$url][1];
 
-
-            if (!class_exists($classe)) {
-                throw new \Exception("La classe $classe n'existe");
-                return;
-            } else {
-                if (!method_exists($classe, $method)) {
-                    throw new \Exception("La methode $method n'existe pas dans la classe $classe");
-                    return;
-                } else {
-                    $controler = new $classe();
-                    call_user_func_array([$controler,$method],[]);
-                    return;
-                }
-            }
+        if (!isset($this->routes[$_SERVER["REQUEST_METHOD"]])) {
+            throw new RouterException("la methode appeler n'existe pas");
         }
 
-        throw new \Exception("404");
-        return;
+        foreach ($this->routes[$_SERVER["REQUEST_METHOD"]] as $route) {
+            if ($route->match($url)) {
+                return $route->resolve();
+            }
+        }
+        throw new RouterException("404");
 
+        return;
     }
 }

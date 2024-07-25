@@ -9,13 +9,14 @@ use Zgeniuscoders\Mvc\Render\Render;
     class HomeController {
 
 
-        public function index(){
+        public function index($id){
             $render = new Render();
 
-            $post  = new Post();
+            // $post  = new Post();
+            var_dump($id);
             
             $render->view("index",[
-                "posts" => $post->all()
+                "id" => $id
             ]);
         }
 
