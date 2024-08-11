@@ -13,6 +13,8 @@ class Route
     public function __construct(private string $url, private $handler)
     {
         $this->url = trim($this->url, '/');
+        // $this->params["id"] = '[0-9]+';
+
     }
 
     public function with(string $key, string $regex)
@@ -35,14 +37,26 @@ class Route
 
         array_shift($matches);
         $this->matches = $matches;
+
         return true;
     }
 
-    private function paramMatch($match)
+    private function paramMatch($match): string
     {
+
+        if(!isset($this->params["id"]) && $match[1] == "id"){
+            return '([0-9]+)';
+        }
+
+        if(empty($this->params)){
+            return '([a-z\-0-9]+)';
+        }
+
+        
         if (isset($this->params[$match[1]])) {
             return '(' . $this->params[$match[1]] . ')';
         }
+
         return '([^/])';
     }
 

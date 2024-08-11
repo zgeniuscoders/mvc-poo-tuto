@@ -17,6 +17,7 @@ class Router
         return $route;
     }
 
+    
     public function post(string $url, array $handler): Route
     {
         $route = new Route($url, $handler);
