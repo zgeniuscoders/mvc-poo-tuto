@@ -13,8 +13,6 @@ class Route
     public function __construct(private string $url, private $handler)
     {
         $this->url = trim($this->url, '/');
-        // $this->params["id"] = '[0-9]+';
-
     }
 
     public function with(string $key, string $regex)
