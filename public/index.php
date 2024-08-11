@@ -10,8 +10,12 @@ require "../vendor/autoload.php";
 define("VIEW_PATH", dirname(__DIR__) . DIRECTORY_SEPARATOR . "views" . DIRECTORY_SEPARATOR);
 
 $router = new Router();
-$router->get('/:id', [HomeController::class, 'index']);
-$router->get('/posts', [PostController::class, 'index']);
+// $router->get('posts/:id', [HomeController::class, 'index']);
+// $router->get('/posts', [PostController::class, 'index']);
+
+$router->get('/posts/:id-:slug', [PostController::class, 'show'])
+    ->with('id', '[0-9]+')
+    ->with('slug', '[a-z\-0-9]+');
 
 try {
     $router->run($_SERVER["REQUEST_URI"]);

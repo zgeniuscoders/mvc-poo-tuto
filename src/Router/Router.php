@@ -9,19 +9,19 @@ class Router
 
     private array $routes = [];
 
-    public function get(string $url, array $handler): self
+    public function get(string $url, array $handler): Route
     {
         $route = new Route($url, $handler);
         $this->routes["GET"][] = $route;
 
-        return $this;
+        return $route;
     }
 
-    public function post(string $url, array $handler): self
+    public function post(string $url, array $handler): Route
     {
         $route = new Route($url, $handler);
         $this->routes["POST"][] = $route;
-        return $this;
+        return $route;
     }
 
 

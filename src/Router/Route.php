@@ -8,21 +8,24 @@ class Route
 {
 
     private $matches;
+    private $params = [];
 
     public function __construct(private string $url, private $handler)
     {
         $this->url = trim($this->url, '/');
     }
 
-    public function with()
+    public function with(string $key, string $regex)
     {
+        $this->params[$key] = str_replace('(', '(?:,', $regex);
+        return $this;
     }
 
 
     public function match(string $url)
     {
         $url = trim($url, '/');
-        $path = preg_replace('#:([\w]+)#', '([^/]+)', $this->url);
+        $path = preg_replace_callback('#:([\w]+)#', [$this, 'paramMatch'], $this->url);
 
         $regex = "#^$path$#i";
 
@@ -33,6 +36,14 @@ class Route
         array_shift($matches);
         $this->matches = $matches;
         return true;
+    }
+
+    private function paramMatch($match)
+    {
+        if (isset($this->params[$match[1]])) {
+            return '(' . $this->params[$match[1]] . ')';
+        }
+        return '([^/])';
     }
 
     public function resolve()
